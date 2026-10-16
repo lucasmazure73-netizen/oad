@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maison des Parfums – Catalogue</title>
+<style>
+:root{--bg:#faf7f2;--card:#fff;--tx:#1c1917;--mu:#78716c;--ac:#9a6b2f;--bd:#e7e0d4;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141211;--card:#1d1a18;--tx:#f3ede4;--mu:#a8a29e;--ac:#d4a762;--bd:#312c28;color-scheme:dark}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:Georgia,'Times New Roman',serif}
+header{text-align:center;padding:56px 20px 32px}
+h1{font-weight:400;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(1.6rem,5vw,2.6rem);margin:0}
+header p{color:var(--mu);font-family:system-ui,sans-serif;max-width:560px;margin:14px auto 0;line-height:1.6}
+.bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:0 16px 24px;font-family:system-ui,sans-serif}
+input{padding:10px 16px;border:1px solid var(--bd);border-radius:99px;background:var(--card);color:var(--tx);width:min(320px,100%)}
+.chip{padding:8px 14px;border:1px solid var(--bd);border-radius:99px;background:none;color:var(--tx);cursor:pointer;font-size:.85rem}
+.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;max-width:1200px;margin:0 auto;padding:0 16px 48px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px;cursor:pointer;transition:.2s;display:flex;flex-direction:column;gap:10px}
+.card:hover{transform:translateY(-3px);border-color:var(--ac)}
+.fl{height:150px;border-radius:10px;display:flex;align-items:center;justify-content:center}.fl svg{height:90%}.sn{font:.82rem/1.45 system-ui,sans-serif;color:var(--mu)}
+.code{font:.72rem system-ui,sans-serif;color:var(--mu);letter-spacing:.1em}
+.card h3{margin:0;font-weight:400;font-size:1.1rem;line-height:1.3}
+.tag{font:.75rem system-ui,sans-serif;color:var(--ac)}
+#m{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;padding:16px;z-index:9}
+#m.s{display:flex}.box{background:var(--card);border-radius:18px;max-width:460px;width:100%;padding:28px;position:relative;max-height:90%;overflow:auto}
+.x{position:absolute;right:14px;top:10px;background:none;border:0;font-size:1.6rem;color:var(--tx);cursor:pointer}
+.btn{display:inline-block;margin-top:18px;padding:12px 22px;background:var(--ac);color:#fff;border-radius:99px;text-decoration:none;font-family:system-ui,sans-serif}
+.box p{color:var(--mu);font-family:system-ui,sans-serif;line-height:1.6}
+footer{text-align:center;color:var(--mu);font:.8rem system-ui,sans-serif;padding:24px 16px 40px;border-top:1px solid var(--bd)}
+#n{text-align:center;color:var(--mu);font-family:system-ui,sans-serif;padding-bottom:12px}
+</style></head><body>
+<header><h1>Maison des Parfums</h1><p>Une sélection de 42 fragrances : gourmandes, boisées, ambrées, florales et fraîches. Trouvez la vôtre, puis contactez-nous pour commander.</p></header>
+<div class="bar"><input id="q" placeholder="Rechercher un parfum ou un code…"><span id="f" style="display:contents"></span></div>
+<div id="n"></div><main class="grid" id="g"></main>
+<div id="m"><div class="box"><button class="x" onclick="m.classList.remove('s')">×</button><div id="d"></div></div></div>
+<footer>© 2026 Maison des Parfums · Contact : contact@exemple.com · Tous les noms appartiennent à leurs propriétaires respectifs.</footer>
+<script>
+const C={Gourmand:['#b0703a','🍯','Notes sucrées et enveloppantes : vanille, caramel, miel, café.'],Boisé:['#5f6b3f','🌲','Sillage chaud et élégant porté par les bois précieux.'],Ambré:['#a1552b','✨','Profil oriental, chaud et sensuel, aux accents résineux.'],Floral:['#a9577a','🌸','Bouquet raffiné, féminin ou mixte, lumineux et romantique.'],Fruité:['#c4553d','🍑','Ouverture juteuse et pétillante, pleine de peps.'],Frais:['#3f7f93','🌊','Fraîcheur aquatique, verte ou agrumée, idéale au quotidien.'],Cuir:['#5a4636','🧥','Texture cuirée et daim, élégante et racée.'],Fumé:['#4a4a52','🔥','Notes fumées, patchouli et épices : intense et captivant.'],Oud:['#3b2a3f','🪵','Oud profond et mystérieux, signature orientale.']};
+const P=`E2008|Babycat|MS707|Ambré
+E1943|Vert Malachite||Frais
+E3014|Oud Maracujá|MS1926-2|Oud
+E3113|Hibiscus Mahajád|MS2126|Floral
+E2047|Le Beau Paradise Garden||Fruité
+E1635|Stronger With You Intensely||Ambré
+E3026|Blanche Bête|MS1892|Floral
+E1506|Le Lion de||Ambré
+E2052|Narcotic Delight||Gourmand
+E1645|Grand Soir||Ambré
+C789BJI|Mango||Fruité
+E842|By the Fireplace||Fumé
+E3290|Khamrah WAHA||Gourmand
+E2045|Narcotic Venus||Floral
+E806|Lost Cherry||Fruité
+E1086|Bitter Peach||Fruité
+E2203|Cuir Beluga||Cuir
+E2227|Tobacco Honey||Gourmand
+E1935|Bianco Latte||Gourmand
+E1925|Erba Pura||Fruité
+E1902|Kirke||Fruité
+E1874|Bonbon Pink Bow Limited Edition||Gourmand
+E1839|Guidance||Boisé
+E1655|Oud Satin Mood||Oud
+E1117|Oud Wood Intense||Oud
+E995|Jazz Club||Fumé
+E760|Patchouli 24||Fumé
+E1266|Black Phantom||Gourmand
+E1469|Angels’ Share||Gourmand
+E1438|Imagination||Frais
+E1445|Baccarat Rouge 540 Extrait de Parfum||Floral
+E1550|Spiritueuse Double Vanille||Gourmand
+E1442|Afternoon Swim||Frais
+E2230|Libre Eau de Parfum Intense||Floral
+E1384|Autumn Vibes||Boisé
+E1768|Le Male Elixir||Ambré
+E1608|Nefs||Fruité
+E1600|Naxos||Gourmand
+E768|White Suede||Cuir
+E3280|Blue Talisman||Frais
+E1471|La Nuit de l’Homme||Boisé
+E2032|UK Artisan-sweets intense||Gourmand`.split('\n').map(l=>{const[c,n,r,f]=l.split('|');return{c,n,r,f}});
+const N={E2008:'Ambre doux, vanille poudrée, bois blonds',E1943:'Feuilles vertes, agrumes, mousse de chêne',E3014:'Fruit de la passion, oud, ambre',E3113:'Hibiscus, fleurs blanches, bois de santal',E2047:'Noix de coco, figue, bois de cèdre',E1635:'Lavande, châtaigne, vanille, ambre',E3026:'Fleur d’oranger, musc blanc, vanille',E1506:'Ambre, vanille, bois résineux',E2052:'Vanille, caramel, notes crémeuses',E1645:'Ambre, benjoin, vanille, tonka',C789BJI:'Mangue juteuse, notes tropicales',E842:'Bois fumé, châtaigne, vanille',E3290:'Cannelle, dattes, vanille, praliné',E2045:'Fleurs blanches, fruits, musc',E806:'Cerise noire, amande, vanille, tonka',E1086:'Pêche, épices, rhum, ambre',E2203:'Cuir doux, daim, vanille',E2227:'Tabac blond, miel, vanille',E1935:'Lait, caramel, vanille, fleur d’oranger',E1925:'Agrumes, fruits mûrs, musc ambré',E1902:'Fruits tropicaux, musc, bois',E1874:'Bonbon rose, caramel, fleurs',E1839:'Épices, encens, bois',E1655:'Oud, rose, vanille, violette',E1117:'Oud, bois de rose, cardamome, ambre',E995:'Rhum, tabac, vanille, cuir',E760:'Patchouli fumé, cuir, vanille',E1266:'Café, rhum, cacao, vanille',E1469:'Cognac, cannelle, vanille, bois de chêne',E1438:'Bergamote, gingembre, thé noir, ambre',E1445:'Safran, jasmin, ambre, cèdre',E1550:'Vanille, rhum, bois, épices',E1442:'Agrumes, menthe, notes marines',E2230:'Lavande, fleur d’oranger, vanille',E1384:'Pomme, cannelle, bois chaud',E1768:'Lavande, menthe, miel, tonka, vanille',E1608:'Fruits tropicaux, fleurs blanches, bois',E1600:'Tabac, miel, lavande, vanille',E768:'Musc, daim, fleurs blanches',E3280:'Agrumes, notes marines, bois',E1471:'Cardamome, lavande, cèdre, vétiver',E2032:'Vanille, caramel, notes sucrées'};
+function B(i){const c=C[P[i].f][0],s=i%4,g='stroke="#fff" stroke-width="2"',L='<rect x="34" y="%y" width="32" height="26" rx="2" fill="#fff" fill-opacity=".85"/>';let b;
+if(s==0)b=`<rect x="38" y="4" width="24" height="16" rx="2" fill="#222"/><rect x="45" y="20" width="10" height="8" fill="#999"/><rect x="22" y="28" width="56" height="84" rx="8" fill="${c}" ${g}/>${L.replace('%y','56')}`;
+if(s==1)b=`<rect x="40" y="4" width="20" height="20" rx="10" fill="#222"/><rect x="45" y="24" width="10" height="10" fill="#999"/><circle cx="50" cy="76" r="40" fill="${c}" ${g}/>${L.replace('%y','62')}`;
+if(s==2)b=`<rect x="42" y="2" width="16" height="22" rx="3" fill="#222"/><rect x="46" y="24" width="8" height="8" fill="#999"/><rect x="30" y="32" width="40" height="84" rx="4" fill="${c}" ${g}/><rect x="36" y="60" width="28" height="26" rx="2" fill="#fff" fill-opacity=".85"/>`;
+if(s==3)b=`<rect x="36" y="6" width="28" height="12" rx="6" fill="#222"/><rect x="44" y="18" width="12" height="12" fill="#999"/><path d="M28 30h44l10 82H18z" fill="${c}" ${g}/>${L.replace('%y','66')}`;
+return `<svg viewBox="0 0 100 120" role="img" aria-label="Flacon">${b}<path d="M30 40v60" stroke="#fff" stroke-opacity=".45" stroke-width="3"/></svg>`}
+let cur='Tous';const g=document.getElementById('g'),q=document.getElementById('q');
+const fb=['Tous',...Object.keys(C)];
+document.getElementById('f').innerHTML=fb.map(x=>`<button class="chip" data-f="${x}">${x}</button>`).join('');
+function R(){const t=q.value.toLowerCase();const L=P.map((p,i)=>({...p,i})).filter(p=>(cur=='Tous'||p.f==cur)&&(p.n+p.c+p.r).toLowerCase().includes(t));
+document.querySelectorAll('.chip').forEach(b=>b.classList.toggle('on',b.dataset.f==cur));
+document.getElementById('n').textContent=L.length+' parfum'+(L.length>1?'s':'');
+g.innerHTML=L.map(p=>`<div class="card" onclick="O(${p.i})"><div class="fl" style="background:${C[p.f][0]}26">${B(p.i)}</div><span class="code">${p.c}</span><h3>${p.n}</h3><span class="tag">${p.f}</span><span class="sn">${N[p.c]}</span></div>`).join('')}
+document.getElementById('f').onclick=e=>{if(e.target.dataset.f){cur=e.target.dataset.f;R()}};q.oninput=R;
+function O(i){const p=P[i],k=C[p.f];document.getElementById('d').innerHTML=`<div class="fl" style="background:${k[0]}26;margin-bottom:16px;height:220px">${B(i)}</div><span class="code">RÉF. ${p.c}${p.r?' · '+p.r:''}</span><h2 style="font-weight:400;margin:6px 0">${p.n}</h2><span class="tag">Famille ${p.f}</span><p><b>Odeur :</b> ${N[p.c]}.</p><p>${k[2]}</p><a class="btn" href="mailto:contact@exemple.com?subject=${encodeURIComponent('Demande : '+p.n+' ('+p.c+')')}">Demander ce parfum</a>`;m.classList.add('s')}
+m.onclick=e=>{if(e.target==m)m.classList.remove('s')};R();
+</script></body></html>
